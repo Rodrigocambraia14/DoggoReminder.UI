@@ -10,14 +10,14 @@ body {
     background-color: whitesmoke;
 }
 
-.login-page {
+.login-page, .register-page {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.login-container {
+.login-container, .register-container {
     width: 300px;
     padding: 20px;
     background-color: #fff;
@@ -41,7 +41,8 @@ label {
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
     width: 92%;
     padding: 10px;
     border: 1px solid #ccc;

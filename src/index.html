@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DoggoReminder</title>
-    <link rel="stylesheet" type="text/css" href="./styles/login-styles.css">
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
     <script src="./src/scripts/login-script.js" defer></script>
 </head>
 </head>
@@ -31,23 +31,27 @@
     </div>
 
     <div class="register-page" id="register">
-        <h2>Cadastro</h2>
-        <form id="register-form">
-            <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" name="register-email" required>
-            </div>
-            <div class="form-group">
-                <label for="register-password">Senha</label>
-                <input type="password" id="register-password" name="register-password" required>
-            </div>
-            <button type="submit">Cadastrar</button>
-        </form>
-        <p>Já possui uma conta? <a href="#">Login</a></p>
+
+        <h1>Doggo Reminder</h1>
+        <div class="register-container">
+            <h2>Cadastro</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha</label>
+                    <input type="password" id="register-password" name="register-password" required>
+                </div>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <p>Já possui uma conta? <a href="#">Login</a></p>
+        </div>
     </div>
 </body>
 </html>
