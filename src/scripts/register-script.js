@@ -1,9 +1,15 @@
 // main.js
 import { API_URL } from '../utils/constants.js';
 import { validateEmail } from '../utils/validations.js';
+import { showLoginForm } from './ui-control-script.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('register-form');
+
+    document.getElementById('login-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        showLoginForm();
+    });
 
     loginForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form submission

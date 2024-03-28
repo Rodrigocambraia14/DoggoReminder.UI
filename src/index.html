@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DoggoReminder</title>
     <link rel="stylesheet" type="text/css" href="./styles/styles.css">
-    <script src="./src/scripts/login-script.js" defer></script>
+    <script src="../src/scripts/login-script.js" type="module"></script>
+    <script src="../src/scripts/register-script.js" type="module"></script>
+    <script src="../src/scripts/ui-control-script.js" type="module"></script>
+    <script src="../src/utils/constants.js" type="module"></script>
+    <script src="../src/utils/validations.js" type="module"></script>
 </head>
 </head>
 <body>
@@ -26,11 +30,11 @@
                 </div>
                 <button type="submit">Login</button>
             </form>
-            <p>Não possui uma conta? <a href="#">Registrar</a></p>
+            <p id="register-link">Não possui uma conta? <a href="#">Registrar</a></p>
         </div>
     </div>
 
-    <div class="register-page" id="register">
+    <div class="register-page" id="register" style="display: none;">
 
         <h1>Doggo Reminder</h1>
         <div class="register-container">
@@ -50,7 +54,7 @@
                 </div>
                 <button type="submit">Cadastrar</button>
             </form>
-            <p>Já possui uma conta? <a href="#">Login</a></p>
+            <p id="login-link">Já possui uma conta? <a href="#">Login</a></p>
         </div>
     </div>
 </body>

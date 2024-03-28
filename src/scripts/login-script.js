@@ -1,9 +1,17 @@
 // main.js
 import { API_URL } from '../utils/constants.js';
 import { validateEmail } from '../utils/validations.js';
+import { showLoginForm, showRegisterForm} from '../scripts/ui-control-script.js'
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
+
+    showLoginForm();
+
+    document.getElementById('register-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        showRegisterForm();
+    });
 
     loginForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form submission
@@ -50,6 +58,5 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Falha ao realizar login, verifique suas credenciais e tente novamente.');
         });
     });
-
     
 });
