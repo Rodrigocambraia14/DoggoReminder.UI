@@ -1,4 +1,4 @@
-export const API_URL = 'https://example.com/api';
+export const API_URL = 'http://127.0.0.1:5000/api';
 export const MAX_USERS = 10;
 export const COLORS = {
     PRIMARY: '#007bff',

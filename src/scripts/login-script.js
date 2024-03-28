@@ -1,7 +1,13 @@
 // main.js
 import { API_URL } from '../utils/constants.js';
 import { validateEmail } from '../utils/validations.js';
-import { showLoginForm, showRegisterForm} from '../scripts/ui-control-script.js'
+import { showErrorToast, 
+    showLoginForm,
+    showRegisterForm,
+    showSuccessToast, 
+    showWarningToast,
+    showLoader,
+    hideLoader } from './ui-control-script.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
@@ -31,31 +37,36 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Assuming you have an API endpoint for login
-        const formData = new FormData();
-        formData.append('email', emailInput.value);
-        formData.append('password', passwordInput.value);
+        const data = {
+            email: emailInput.value,
+            password: passwordInput.value
+        }
 
-        fetch(API_URL, {
+        showLoader()
+
+        fetch(API_URL + '/user/login', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         })
         .then(response => {
+
             if (response.ok) {
-                return response.json();
+
+                //trocar por show Home form
+                showLoginForm()
+
+                return;
             } else {
                 throw new Error(response.Error);
             }
         })
-        .then(data => {
-            // Handle successful login, e.g., redirect to dashboard
-            console.log('Login successful:', data);
-            // window.location.href = '/dashboard.html'; // Redirect to dashboard
-        })
         .catch(error => {
             // Handle login error
-            console.error('Login error:', error);
-            alert('Falha ao realizar login, verifique suas credenciais e tente novamente.');
+            console.error('Register error:', error);
+            showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
+        }).finally( () =>{
+            hideLoader()
         });
     });
     
