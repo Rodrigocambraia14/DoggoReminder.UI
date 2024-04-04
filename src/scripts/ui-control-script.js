@@ -3,11 +3,19 @@
 export function showLoginForm() {
     document.getElementById('login').style.display = 'flex';
     document.getElementById('register').style.display = 'none';
+    document.getElementById('home').style.display = 'none';
+}
+
+export function showHomePage() {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('register').style.display = 'none';
+    document.getElementById('home').style.display = 'flex';
 }
 
 export function showRegisterForm() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('register').style.display = 'flex';
+    document.getElementById('home').style.display = 'none';
 }
 
 //end - switch pages

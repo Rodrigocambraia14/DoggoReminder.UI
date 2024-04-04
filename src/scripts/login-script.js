@@ -7,9 +7,17 @@ import { showErrorToast,
     showSuccessToast, 
     showWarningToast,
     showLoader,
-    hideLoader } from './ui-control-script.js';
+    hideLoader, 
+    showHomePage} from './ui-control-script.js';
 
 document.addEventListener('DOMContentLoaded', function() {
+    let storedUserId = localStorage.getItem('userId');
+
+    if(storedUserId != undefined){
+        showHomePage();
+        return;
+    }
+
     const loginForm = document.getElementById('login-form');
 
     showLoginForm();
@@ -52,14 +60,16 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => {
 
             if (response.ok) {
-
-                //trocar por show Home form
-                showLoginForm()
-
-                return;
+                return response.json();
             } else {
                 throw new Error(response.Error);
             }
+        })
+        .then(data => {
+
+            localStorage.setItem('userId', data);
+
+            showHomePage();
         })
         .catch(error => {
             // Handle login error
