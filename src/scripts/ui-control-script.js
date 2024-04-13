@@ -18,6 +18,25 @@ export function showRegisterForm() {
     document.getElementById('home').style.display = 'none';
 }
 
+export function logout() {
+    document.getElementById('login').style.display = 'flex';
+    document.getElementById('register').style.display = 'none';
+    document.getElementById('home').style.display = 'none';
+
+    localStorage.clear();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtém a referência do elemento
+    var logoutButton = document.getElementById("logout-button");
+
+    // Adiciona um ouvinte de evento de clique ao elemento
+    logoutButton.addEventListener("click", function() {
+        // Chame a função de logout aqui
+        logout();
+    });
+});
+
 //end - switch pages
 
 //start - toast

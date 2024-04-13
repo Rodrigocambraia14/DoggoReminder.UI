@@ -10,13 +10,29 @@ body {
     background-color: whitesmoke;
 }
 
+
+/* Estilo da imagem de fundo */
 .bg {
-	width: 100%;
-    height: 100%;
-	position: absolute;
-    background: url('../media/dog-bg.jpg') center center/cover;
-    filter: brightness(0.5); /* Adjust darkness here */
-    z-index: -1; /* Place behind other content */
+  position: fixed; /* Posicionamento absoluto */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../media/dog-bg.jpg');
+  background-repeat:repeat-y; 
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.bg::before {
+  content: ''; /* Necessário para que o pseudo-elemento seja exibido */
+  position: absolute; /* Posicionamento absoluto em relação ao elemento pai (.bg) */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Cor preta semi-transparente */
+  z-index: 0; /* Move o pseudo-elemento para trás do conteúdo */
 }
 
 .home-page .content {
@@ -25,6 +41,8 @@ body {
     color: white; /* Example styling to make text visible */
 	width: 100%;
 	height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .login-page, .register-page {
@@ -97,10 +115,9 @@ a:hover {
 
 .icon-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
-	background: #00000070;
     margin-top: 0;
   }
   .icon-container .fas {
@@ -148,11 +165,11 @@ a:hover {
 
   #meus-caes table {
 	width: 80%;
-	border: 1px solid white;
-	border-collapse: collapse;
+  background: #0000007a;
+  border-collapse: collapse;
 	border-radius: 10px;
 	overflow: hidden;
-	margin-top: 20px;
+  border: 1px solid black;
   }
   
   #meus-caes th, td {
@@ -165,26 +182,125 @@ a:hover {
 	color: white;
   }
   
-  #meus-caes tr:nth-child(even) {
-	background-color: #f2f2f2;
-  }
-  
-  #meus-caes tr:hover {
-	background-color: #e2e2e2;
-  }
-  
-  #meus-caes th, td, .options {
-	border: 1px solid #ddd;
-  }
   
   #meus-caes .options {
 	text-align: center;
   }
   
   #meus-caes img {
-	width: 100px;
+	width: 45px;
 	height: auto;
 	display: block;
 	margin: auto;
 	border-radius: 50%;
   }
+
+  .options span:hover {
+    cursor:pointer;
+    color: orange;
+  }
+
+  .options{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .create-dog-container {
+    width: 85%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .fa-paw:hover {
+    color:orange;
+    cursor: pointer;
+  }
+
+  .fa-paw {
+    font-size: 40px;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animated-icon {
+    animation: pulse 1s infinite; 
+  }
+
+
+  #minhas-rotinas {
+    margin-top: 200px;
+  }
+
+  .new-dog-container {
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-dog-container #dogForm{
+  width: 35%;
+  padding: 20px;
+  background: #000000a1;
+  border-radius: 20px;
+}
+.new-dog-container .form-group {
+    margin-bottom: 20px;
+}
+
+.new-dog-container label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.new-dog-container input[type="text"],
+.new-dog-container input[type="number"],
+.new-dog-container select {
+    padding: 10px;
+    border: 1px solid orange;
+    border-radius: 10px;
+    background-color: transparent;
+    color : white;
+}
+
+
+.new-dog-container .button-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.new-dog-container button {
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.new-dog-container button:hover {
+    background-color: #ff7f00;
+}
+
+.new-dog-container select option {
+  color: black; 
+}
+
+.new-dog-container button {
+    width: 50%;
+}

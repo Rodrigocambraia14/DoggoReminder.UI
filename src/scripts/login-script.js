@@ -1,6 +1,7 @@
 // main.js
 import { API_URL } from '../utils/constants.js';
 import { validateEmail } from '../utils/validations.js';
+import { getDogs } from './my-dogs-script.js';
 import { showErrorToast, 
     showLoginForm,
     showRegisterForm,
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('userId', data);
 
             showHomePage();
+            getDogs();
         })
         .catch(error => {
             // Handle login error
