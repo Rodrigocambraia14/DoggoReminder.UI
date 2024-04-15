@@ -31,26 +31,40 @@ export function getDogs(){
           tableBody.removeChild(tableBody.firstChild);
         }
 
-        data.forEach(dog => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td><img src="$../.././media/cute-dog-icon.png" alt="Icone do cão"></td>
-            <td>${dog.name}</td>
-            <td>${dog.race}</td>
-            <td>${dog.age} ano${dog.age > 1 ? 's' : ''}</td>
-            <td>${dog.color}</td>
-            <td>${dog.gender}</td>
-            <td class="options">
-                <span class="editar inner-option" data-dog-id="${dog.id}">Editar</span>
-                <span class="excluir inner-option" data-dog-id="${dog.id}">Excluir</span>
-                <span class="visualizar-rotinas inner-option" data-dog-id="${dog.id}">Visualizar Rotinas</span>
-                <span class="criar-nova-rotina inner-option" data-dog-id="${dog.id}">Criar rotina</span>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
+        if(data.length == 0){
+          data.forEach(dog => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td colspan=100%>Nenhum animal cadastrado.</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }
+        else {
+          data.forEach(dog => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td><img src="$../.././media/cute-dog-icon.png" alt="Icone do cão"></td>
+              <td>${dog.name}</td>
+              <td>${dog.race}</td>
+              <td>${dog.age} ano${dog.age > 1 ? 's' : ''}</td>
+              <td>${dog.color}</td>
+              <td>${dog.gender}</td>
+              <td class="options">
+                  <span class="editar inner-option" data-dog-id="${dog.id}">Editar</span>
+                  <span class="excluir inner-option" data-dog-id="${dog.id}">Excluir</span>
+                  <span class="visualizar-rotinas inner-option" data-dog-id="${dog.id}">Visualizar Rotinas</span>
+                  <span class="criar-nova-rotina inner-option" data-dog-id="${dog.id}">Criar rotina</span>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
 
-        setModal();
+          setModal();
+        }
+
+        
+
       })
       .catch(error => console.error('Error fetching dogs:', error));
 }
