@@ -81,10 +81,12 @@
                <h1 style="color: whitesmoke;">Meus Cães</h1>
 
                <div class="create-dog-container">
-                  <div class="tooltip paw-tooltip" >
-                     <i class="fas fa-paw animated-icon" aria-hidden="true"></i>
-                     <span class="tooltiptext">Adicionar um pet</span>
-                  </div>
+                  <a href="#new-pet-ref">
+                     <div class="tooltip paw-tooltip" >
+                        <i class="fas fa-paw animated-icon" aria-hidden="true"></i>
+                        <span class="tooltiptext">Adicionar um pet</span>
+                     </div>
+                  </a>
                </div>
                <table id="dog-table">
                   <thead>
@@ -124,7 +126,7 @@
                </table>
             </div>
 
-            <div class="new-dog-container">
+            <div class="new-dog-container" id="new-pet-ref">
                <h1 style="color: whitesmoke;">Novo Pet</h1>
                <form id="dogForm">
                    <div class="form-group">
@@ -132,13 +134,14 @@
                        <input type="text" id="nome" name="nome" required>
                    </div>
                    <div class="form-group">
-                       <label for="idade">Idade</label>
+                       <label for="idade">Idade (anos)</label>
                        <input type="number" id="idade" name="idade" required>
                    </div>
                    <div class="form-group">
                        <label for="raca">Raça</label>
                        <select id="raca" name="raca" required>
                         <option value="">Selecione...</option>
+                        <option value="Vira-lata">Vira-lata</option>
                         <option value="Affenpinscher">Affenpinscher</option>
                         <option value="Airedale Terrier">Airedale Terrier</option>
                         <option value="Akita Inu">Akita Inu</option>
@@ -248,6 +251,31 @@
                    </div>
                </form>
            </div>
+
+
+
+           <div class="new-routine-container" id="new-routine-ref">
+            <h1 style="color: whitesmoke;">Nova rotina</h1>
+            <form id="routineForm">
+               <div class="form-group">
+                 <label for="name">Nome</label>
+                 <input type="text" id="name" name="name" required>
+               </div>
+               <div class="form-group">
+                 <label for="dog-select">Cão</label>
+                 <select id="dog-select" name="dog-select" required>
+                   <option value="">Selecione...</option>
+                   <!-- Options will be populated dynamically by JavaScript -->
+                 </select>
+               </div>
+               <div class="form-group">
+                 <label for="portions">Quantidade de Porções</label>
+                 <input type="number" id="portions" name="portions" min="1" required>
+               </div>
+               <div id="portionDetails"></div>
+               <button type="submit">Enviar</button>
+             </form>
+        </div>
          </div>
       </div>
       <!-- end home -->

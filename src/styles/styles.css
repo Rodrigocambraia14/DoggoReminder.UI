@@ -278,13 +278,13 @@ a:hover {
 }
 
 
-.new-dog-container .button-container{
+.new-routine-container .button-container, .new-dog-container .button-container{
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.new-dog-container button {
+.new-routine-container button, .new-dog-container button {
     background-color: orange;
     color: white;
     border: none;
@@ -293,14 +293,14 @@ a:hover {
     cursor: pointer;
 }
 
-.new-dog-container button:hover {
+.new-routine-container button:hover, .new-dog-container button:hover {
     background-color: #ff7f00;
 }
 
-.new-dog-container select option {
+.new-routine-container select option, .new-dog-container select option {
   color: black; 
 }
 
-.new-dog-container button {
+.new-routine-container button, .new-dog-container button {
     width: 50%;
 }

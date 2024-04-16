@@ -7,7 +7,48 @@ import { showErrorToast,
 
 document.addEventListener('DOMContentLoaded', function() {
     getDogs()
+
+    setPortionsInputEvent()
 });
+
+function setPortionsInputEvent(){
+  const portionsInput = document.getElementById('portions');
+  portionsInput.addEventListener('input', () => {
+    const portions = parseInt(portionsInput.value);
+    const portionDetails = document.getElementById('portionDetails');
+    portionDetails.innerHTML = ''; // Clear previous inputs
+
+    if (portions > 0) {
+      for (let i = 1; i <= portions; i++) {
+        const div = document.createElement('div');
+        div.classList.add('portion-detail');
+
+        const title = document.createElement('h3');
+        title.textContent = `Detalhe da Porção ${i}`;
+        div.appendChild(title);
+
+        const portionNameInput = document.createElement('input');
+        portionNameInput.type = 'text';
+        portionNameInput.name = `portionName${i}`;
+        portionNameInput.placeholder = 'Nome da Porção';
+        div.appendChild(portionNameInput);
+
+        const portionQuantityInput = document.createElement('input');
+        portionQuantityInput.type = 'number';
+        portionQuantityInput.name = `portionQuantity${i}`;
+        portionQuantityInput.placeholder = 'Quantidade em gramas';
+        div.appendChild(portionQuantityInput);
+
+        const mealTimeInput = document.createElement('input');
+        mealTimeInput.type = 'time';
+        mealTimeInput.name = `mealTime${i}`;
+        div.appendChild(mealTimeInput);
+
+        portionDetails.appendChild(div);
+      }
+    }
+  });
+}
 
 export function getDogs(){
 
@@ -41,6 +82,7 @@ export function getDogs(){
           });
         }
         else {
+          const dogSelect = document.getElementById('dog-select');
           data.forEach(dog => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -53,11 +95,14 @@ export function getDogs(){
               <td class="options">
                   <span class="editar inner-option" data-dog-id="${dog.id}">Editar</span>
                   <span class="excluir inner-option" data-dog-id="${dog.id}">Excluir</span>
-                  <span class="visualizar-rotinas inner-option" data-dog-id="${dog.id}">Visualizar Rotinas</span>
-                  <span class="criar-nova-rotina inner-option" data-dog-id="${dog.id}">Criar rotina</span>
               </td>
             `;
             tableBody.appendChild(row);
+
+            const option = document.createElement('option');
+            option.value = dog.id;
+            option.textContent = dog.name;
+            dogSelect.appendChild(option);
           });
 
           setModal();
@@ -82,12 +127,7 @@ function setModal() {
               removeDog(dogId);
           } else if (option.classList.contains("editar")) {
               updateDog(dogId);
-          } else if (option.classList.contains("visualizar-rotinas")) {
-              viewDogRoutines(dogId);
-          } else if (option.classList.contains("criar-nova-rotina")) {
-              createNewDogRoutine(dogId);
           }
-
       });
   });
 
@@ -115,16 +155,94 @@ function updateDog(dog_id){
 
 }
 
-function viewDogRoutines(dog_id){
-  
-}
-
-function createNewDogRoutine(dog_id){
-  
-}
-  
 document.getElementById('dogForm').addEventListener('submit', function(event) {
   event.preventDefault();
-  // Aqui você pode adicionar a lógica para lidar com o envio do formulário
-  // Por exemplo, enviar os dados para o servidor via AJAX
-});
+
+  const data = {
+    name: event.target['nome'].value,
+    race: event.target['raca'].value,
+    age: event.target['idade'].value,
+    gender: event.target['genero'].value,
+    color: event.target['cor'].value,
+    user_id: localStorage.getItem('userId')
+  }
+
+        showLoader()
+
+        fetch(API_URL + '/dog/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(response.Error);
+            }
+        })
+        .then(data => {
+
+            showSuccessToast('Cão adicionado com sucesso!')
+
+            getDogs();
+        })
+        .catch(error => {
+            // Handle login error
+            console.error('Register error:', error);
+            showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
+        }).finally( () =>{
+            hideLoader()
+
+            const targetDiv = document.getElementById('meus-caes');
+            targetDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+
+
+document.getElementById('routineForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+    
+      const data = {
+        name: event.target['nome'].value,
+        race: event.target['raca'].value,
+        age: event.target['idade'].value,
+        gender: event.target['genero'].value,
+        color: event.target['cor'].value,
+        user_id: localStorage.getItem('userId')
+      }
+    
+            showLoader()
+    
+            fetch(API_URL + '/dog/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+    
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.Error);
+                }
+            })
+            .then(data => {
+    
+                showSuccessToast('Cão adicionado com sucesso!')
+    
+                getDogs();
+            })
+            .catch(error => {
+                // Handle login error
+                console.error('Register error:', error);
+                showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
+            }).finally( () =>{
+                hideLoader()
+    
+                const targetDiv = document.getElementById('meus-caes');
+                targetDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
