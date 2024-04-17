@@ -5,10 +5,15 @@ import { showErrorToast,
     showLoader,
     hideLoader} from './ui-control-script.js';
 
+let dogs = undefined;
+let chosenDogId = undefined;
+
 document.addEventListener('DOMContentLoaded', function() {
     getDogs()
 
     setPortionsInputEvent()
+
+    setCloseModalEvent()
 });
 
 function setPortionsInputEvent(){
@@ -27,17 +32,34 @@ function setPortionsInputEvent(){
         title.textContent = `Detalhe da Porção ${i}`;
         div.appendChild(title);
 
+        const portionNameLabel = document.createElement('label');
+        portionNameLabel.for = `portionName${i}`;
+        portionNameLabel.textContent = 'Nome'
+        div.appendChild(portionNameLabel);
+
         const portionNameInput = document.createElement('input');
         portionNameInput.type = 'text';
         portionNameInput.name = `portionName${i}`;
-        portionNameInput.placeholder = 'Nome da Porção';
+        portionNameInput.placeholder = 'Café da manhã';
         div.appendChild(portionNameInput);
+
+        const portionQuantityLabel = document.createElement('label');
+        portionQuantityLabel.for = `portionQuantity${i}`;
+        portionQuantityLabel.textContent = 'Quantidade em gramas'
+        portionQuantityLabel.style.marginTop = '15px';
+        div.appendChild(portionQuantityLabel);
 
         const portionQuantityInput = document.createElement('input');
         portionQuantityInput.type = 'number';
         portionQuantityInput.name = `portionQuantity${i}`;
-        portionQuantityInput.placeholder = 'Quantidade em gramas';
+        portionQuantityInput.placeholder = '400';
         div.appendChild(portionQuantityInput);
+
+        const mealTimeLabel = document.createElement('label');
+        mealTimeLabel.for = `mealTime${i}`;
+        mealTimeLabel.textContent = 'horário';
+        mealTimeLabel.style.marginTop = '15px';
+        div.appendChild(mealTimeLabel);
 
         const mealTimeInput = document.createElement('input');
         mealTimeInput.type = 'time';
@@ -73,20 +95,21 @@ export function getDogs(){
         }
 
         if(data.length == 0){
-          data.forEach(dog => {
             const row = document.createElement('tr');
             row.innerHTML = `
-              <td colspan=100%>Nenhum animal cadastrado.</td>
+              <td colspan=100%>Nenhum aumigo cadastrado.</td>
             `;
             tableBody.appendChild(row);
-          });
         }
         else {
+
+          dogs = data;
+
           const dogSelect = document.getElementById('dog-select');
-          data.forEach(dog => {
+          dogs.forEach(dog => {
             const row = document.createElement('tr');
             row.innerHTML = `
-              <td><img src="$../.././media/cute-dog-icon.png" alt="Icone do cão"></td>
+              <td><img src="$../.././media/cute-dog-icon.png" alt="Icone do aumigo"></td>
               <td>${dog.name}</td>
               <td>${dog.race}</td>
               <td>${dog.age} ano${dog.age > 1 ? 's' : ''}</td>
@@ -151,9 +174,36 @@ function removeDog(dog_id) {
 }
 
 
-function updateDog(dog_id){
+function updateDog(dog_id) {
+  // Find the chosen dog by its ID
+  console.log('editar')
+  chosenDogId = dog_id;
+  let chosenDog = dogs.find(dog => dog.id === dog_id);
 
+  // Get the modal element
+  let modal = document.getElementById('updateDogModal');
+
+  // Get the form inputs
+  let nomeInput = modal.querySelector('#modal-nome');
+  let racaSelect = modal.querySelector('#modal-raca');
+  let idadeInput = modal.querySelector('#modal-idade');
+  let corInput = modal.querySelector('#modal-cor');
+  let generoInput = modal.querySelector('#modal-genero');
+
+  nomeInput.value = chosenDog.name;
+  idadeInput.value = chosenDog.age;
+  corInput.value = chosenDog.color;
+  generoInput.value = chosenDog.gender;
+
+  let existingBreedSelect = document.getElementById('raca');
+  let racaOptions = existingBreedSelect.innerHTML;
+  racaSelect.innerHTML = racaOptions;
+
+  racaSelect.value = chosenDog.race;
+
+  modal.style.display = 'block';
 }
+
 
 document.getElementById('dogForm').addEventListener('submit', function(event) {
   event.preventDefault();
@@ -184,7 +234,7 @@ document.getElementById('dogForm').addEventListener('submit', function(event) {
         })
         .then(data => {
 
-            showSuccessToast('Cão adicionado com sucesso!')
+            showSuccessToast('Aumigo adicionado com sucesso!')
 
             getDogs();
         })
@@ -199,6 +249,56 @@ document.getElementById('dogForm').addEventListener('submit', function(event) {
             targetDiv.scrollIntoView({ behavior: 'smooth' });
         });
     });
+
+    document.getElementById('updateDogForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+    
+      debugger;
+
+      const data = {
+        name: event.target['modal-nome'].value,
+        race: event.target['modal-raca'].value,
+        age: event.target['modal-idade'].value,
+        gender: event.target['modal-genero'].value,
+        color: event.target['modal-cor'].value,
+        dog_id: chosenDogId,
+        user_id: localStorage.getItem('userId')
+      }
+    
+            showLoader()
+    
+            fetch(API_URL + '/dog/update', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+    
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(response.Error);
+                }
+            })
+            .then(data => {
+    
+                showSuccessToast(data.message);
+
+                closeModal();
+
+                getDogs();
+            })
+            .catch(error => {
+                // Handle login error
+                console.error('Register error:', error);
+                showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
+            }).finally( () =>{
+                hideLoader()
+    
+                const targetDiv = document.getElementById('meus-caes');
+                targetDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
 
 
 
@@ -230,10 +330,7 @@ document.getElementById('routineForm').addEventListener('submit', function(event
                 }
             })
             .then(data => {
-    
-                showSuccessToast('Cão adicionado com sucesso!')
-    
-                getDogs();
+                showSuccessToast('Rotina adicionada com sucesso!')
             })
             .catch(error => {
                 // Handle login error
@@ -246,3 +343,16 @@ document.getElementById('routineForm').addEventListener('submit', function(event
                 targetDiv.scrollIntoView({ behavior: 'smooth' });
             });
         });
+
+function setCloseModalEvent(){
+  var modal = document.getElementById("updateDogModal");
+
+  var closeButton = modal.querySelector(".close");
+
+  closeButton.addEventListener("click", closeModal);
+}
+
+function closeModal() {
+  var modal = document.getElementById("updateDogModal");
+  modal.style.display = "none";
+}

@@ -78,13 +78,13 @@
                </div>
             </div>
             <div id="meus-caes">
-               <h1 style="color: whitesmoke;">Meus Cães</h1>
+               <h1 style="color: whitesmoke;">Meus Aumigos</h1>
 
                <div class="create-dog-container">
                   <a href="#new-pet-ref">
                      <div class="tooltip paw-tooltip" >
                         <i class="fas fa-paw animated-icon" aria-hidden="true"></i>
-                        <span class="tooltiptext">Adicionar um pet</span>
+                        <span class="tooltiptext">Adicionar um aumigo</span>
                      </div>
                   </a>
                </div>
@@ -127,7 +127,7 @@
             </div>
 
             <div class="new-dog-container" id="new-pet-ref">
-               <h1 style="color: whitesmoke;">Novo Pet</h1>
+               <h1 style="color: whitesmoke;">Novo Aumigo</h1>
                <form id="dogForm">
                    <div class="form-group">
                        <label for="nome">Nome</label>
@@ -257,6 +257,8 @@
            <div class="new-routine-container" id="new-routine-ref">
             <h1 style="color: whitesmoke;">Nova rotina</h1>
             <form id="routineForm">
+               <p style="color: #afafaf;
+               font-size: 12px;">Crie uma nova rotina para receber lembretes sempre que chegar o horário de alimentar o seu aumigo! </p>
                <div class="form-group">
                  <label for="name">Nome</label>
                  <input type="text" id="name" name="name" required>
@@ -273,14 +275,49 @@
                  <input type="number" id="portions" name="portions" min="1" required>
                </div>
                <div id="portionDetails"></div>
-               <button type="submit">Enviar</button>
+
+               <div class="button-container">
+                  <button type="submit" style="margin-top: 20px;">Enviar</button>
+               </div>
              </form>
         </div>
          </div>
       </div>
       <!-- end home -->
 
-      
+      <!-- modal -->
+      <div id="updateDogModal" class="modal" style="display: none;">
+         <div class="modal-content">
+           <span class="close">&times;</span>
+           <form id="updateDogForm">
+             <div class="form-group">
+               <label for="modal-nome">Nome</label>
+               <input type="text" id="modal-nome" name="modal-nome" required>
+             </div>
+             <div class="form-group">
+               <label for="modal-raca">Raça</label>
+               <select id="modal-raca" name="modal-raca" required></select>
+             </div>
+             <div class="form-group">
+               <label for="modal-idade">Idade</label>
+               <input type="text" id="modal-idade" name="modal-idade" required>
+             </div>
+             <div class="form-group">
+               <label for="modal-cor">Cor</label>
+               <input type="text" id="modal-cor" name="modal-cor" required>
+             </div>
+             <div class="form-group">
+               <label for="modal-genero">Gênero</label>
+               <select id="modal-genero" name="modal-genero" required>
+                  <option value="">Selecione...</option>
+                  <option value="Macho">Macho</option>
+                  <option value="Fêmea">Fêmea</option>
+               </select>
+             </div>
+             <button type="submit">Atualizar</button>
+           </form>
+         </div>
+       </div>
    </body>
 </html>
 <!-- CDN de toastr -->
