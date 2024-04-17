@@ -253,8 +253,6 @@ document.getElementById('dogForm').addEventListener('submit', function(event) {
     document.getElementById('updateDogForm').addEventListener('submit', function(event) {
       event.preventDefault();
     
-      debugger;
-
       const data = {
         name: event.target['modal-nome'].value,
         race: event.target['modal-raca'].value,
@@ -306,17 +304,15 @@ document.getElementById('routineForm').addEventListener('submit', function(event
       event.preventDefault();
     
       const data = {
-        name: event.target['nome'].value,
-        race: event.target['raca'].value,
-        age: event.target['idade'].value,
-        gender: event.target['genero'].value,
-        color: event.target['cor'].value,
-        user_id: localStorage.getItem('userId')
+        name: event.target['name'].value,
+        dog_id: event.target['dog-select'].value,
+        portions: event.target['portions'].value,
+        portion_details: getPortionDetailValues()
       }
     
             showLoader()
     
-            fetch(API_URL + '/dog/add', {
+            fetch(API_URL + '/food_routine/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -330,7 +326,7 @@ document.getElementById('routineForm').addEventListener('submit', function(event
                 }
             })
             .then(data => {
-                showSuccessToast('Rotina adicionada com sucesso!')
+                showSuccessToast(data.message)
             })
             .catch(error => {
                 // Handle login error
@@ -355,4 +351,25 @@ function setCloseModalEvent(){
 function closeModal() {
   var modal = document.getElementById("updateDogModal");
   modal.style.display = "none";
+}
+
+function getPortionDetailValues() {
+  const portionDetails = document.querySelectorAll('.portion-detail');
+  const portionDetailsArray = [];
+
+  portionDetails.forEach((portionDetail, index) => {
+    const name = portionDetail.querySelector(`input[name="portionName${index + 1}"]`).value;
+    const grams = portionDetail.querySelector(`input[name="portionQuantity${index + 1}"]`).value;
+    const feedTime = portionDetail.querySelector(`input[name="mealTime${index + 1}"]`).value;
+
+    const portionDetailObject = {
+      name: name,
+      grams: grams,
+      feed_time: feedTime
+    };
+
+    portionDetailsArray.push(portionDetailObject);
+  });
+
+  return portionDetailsArray;
 }
