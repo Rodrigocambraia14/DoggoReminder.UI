@@ -5,11 +5,13 @@ import { showErrorToast,
     showLoader,
     hideLoader} from './ui-control-script.js';
 
-let dogs = undefined;
+let dogs = [];
+let routines = [];
 let chosenDogId = undefined;
 
 document.addEventListener('DOMContentLoaded', function() {
     getDogs()
+    getRoutines()
 
     setPortionsInputEvent()
 
@@ -154,6 +156,100 @@ function setModal() {
       });
   });
 
+}
+
+export function getRoutines(){
+
+  let storedUserId = localStorage.getItem('userId');
+
+    if(storedUserId == undefined){
+      return;
+    }
+
+    fetch(API_URL + `/food_routine/list?user_id=${storedUserId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response =>  response.json()
+        )
+      .then(data => {
+        const tableBody = document.getElementById('routine-table-body');
+  
+        // Limpar todas as linhas da tabela
+        while (tableBody.firstChild) {
+          tableBody.removeChild(tableBody.firstChild);
+        }
+
+        if(data.length == 0){
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td colspan=100%>Nenhuma rotina cadastrada.</td>
+            `;
+            tableBody.appendChild(row);
+        }
+        else {
+
+          routines = data;
+
+          routines.forEach(routine => {
+            const row = document.createElement('tr');
+            const arrowCell = document.createElement('td'); // Create a cell for the arrow
+            const arrowButton = document.createElement('button'); // Create the arrow button
+            arrowButton.innerHTML = '&#9660;'; // Unicode for downward arrow
+            arrowButton.classList.add('accordion-btn'); // Add a class for styling
+            arrowCell.appendChild(arrowButton); // Append the arrow button to the cell
+            
+            const detailsCell = document.createElement('td'); // Create a cell for the details
+            detailsCell.setAttribute('colspan', '2'); // Span the cell across 2 columns
+            
+            const innerTable = document.createElement('table'); // Create inner table
+            const headerRow = document.createElement('tr'); // Create header row for the inner table
+            headerRow.innerHTML = `
+                <th>Nome</th>
+                <th>Quantidade (gramas)</th>
+                <th>Horário</th>
+            `;
+            innerTable.appendChild(headerRow); // Append header row to inner table
+        
+            routine.portion_details.forEach(portion => { // Loop through portion details
+                const innerRow = document.createElement('tr'); // Create a row for the inner table
+                innerRow.innerHTML = `
+                    <td>${portion.name}</td>
+                    <td>${portion.grams}</td>
+                    <td>${portion.feed_time}</td>
+                `;
+                innerTable.appendChild(innerRow); // Append inner row to inner table
+            });
+            
+            detailsCell.appendChild(innerTable); // Append the inner table to the details cell
+            detailsCell.style.display = 'none'; // Initially hide the details
+            
+            // Toggle visibility of details on arrow button click
+            arrowButton.addEventListener('click', () => {
+                if (detailsCell.style.display === 'none') {
+                    detailsCell.style.display = 'table-cell';
+                    arrowButton.innerHTML = '&#9650;'; // Change arrow to upward when expanded
+                } else {
+                    detailsCell.style.display = 'none';
+                    arrowButton.innerHTML = '&#9660;'; // Change arrow to downward when collapsed
+                }
+            });
+            
+            row.innerHTML = `
+                <td>${routine.name}</td>
+                <td>${routine.portions}</td>
+            `;
+            row.appendChild(arrowCell); // Append the arrow cell to the row
+            row.appendChild(detailsCell); // Append the details cell to the row
+            tableBody.appendChild(row); // Append the row to the table body
+        });
+
+        }
+
+        
+
+      })
+      .catch(error => console.error('Error fetching dogs:', error));
 }
 
 function removeDog(dog_id) {
@@ -327,6 +423,7 @@ document.getElementById('routineForm').addEventListener('submit', function(event
             })
             .then(data => {
                 showSuccessToast(data.message)
+                getRoutines()
             })
             .catch(error => {
                 // Handle login error
@@ -335,7 +432,7 @@ document.getElementById('routineForm').addEventListener('submit', function(event
             }).finally( () =>{
                 hideLoader()
     
-                const targetDiv = document.getElementById('meus-caes');
+                const targetDiv = document.getElementById('minhas-rotinas');
                 targetDiv.scrollIntoView({ behavior: 'smooth' });
             });
         });

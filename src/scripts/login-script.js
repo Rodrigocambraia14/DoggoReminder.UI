@@ -1,7 +1,7 @@
 // main.js
 import { API_URL } from '../utils/constants.js';
 import { validateEmail } from '../utils/validations.js';
-import { getDogs } from './my-dogs-script.js';
+import { getDogs } from './spa-script.js';
 import { showErrorToast, 
     showLoginForm,
     showRegisterForm,
