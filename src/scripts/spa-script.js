@@ -10,12 +10,18 @@ let routines = [];
 let chosenDogId = undefined;
 
 document.addEventListener('DOMContentLoaded', function() {
+
+  const user_id = localStorage.getItem('userId');
+
+  if(user_id){
     getDogs();
     getRoutines();
     setPortionsInputEvent();
     setCloseModalEvent();
 
     setInterval(getNotifications, 30000); 
+  }
+    
 });
 
 function setPortionsInputEvent(){
@@ -23,7 +29,7 @@ function setPortionsInputEvent(){
   portionsInput.addEventListener('input', () => {
     const portions = parseInt(portionsInput.value);
     const portionDetails = document.getElementById('portionDetails');
-    portionDetails.innerHTML = ''; // Clear previous inputs
+    portionDetails.innerHTML = ''; 
 
     if (portions > 0) {
       for (let i = 1; i <= portions; i++) {
@@ -296,8 +302,6 @@ function removeDog(dog_id) {
 
 
 function updateDog(dog_id) {
-  // Find the chosen dog by its ID
-  console.log('editar')
   chosenDogId = dog_id;
   let chosenDog = dogs.find(dog => dog.id === dog_id);
 
@@ -360,7 +364,6 @@ document.getElementById('dogForm').addEventListener('submit', function(event) {
             getDogs();
         })
         .catch(error => {
-            // Handle login error
             console.error('Register error:', error);
             showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
         }).finally( () =>{
@@ -408,7 +411,6 @@ document.getElementById('dogForm').addEventListener('submit', function(event) {
                 getDogs();
             })
             .catch(error => {
-                // Handle login error
                 console.error('Register error:', error);
                 showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
             }).finally( () =>{
@@ -451,7 +453,6 @@ document.getElementById('routineForm').addEventListener('submit', function(event
                 getRoutines()
             })
             .catch(error => {
-                // Handle login error
                 console.error('Register error:', error);
                 showErrorToast('Erro ao se comunicar com o servidor, tente novamente mais tarde.');
             }).finally( () =>{
@@ -517,7 +518,6 @@ function getNotifications(){
     }
   })
   .catch(error => {
-    // Handle login error
     console.error('Register error:', error);
   }).finally( () =>{
 
@@ -526,30 +526,33 @@ function getNotifications(){
 
 
 function showNotification(message) {
-  // Check if the browser supports notifications
   if (!("Notification" in window)) {
       alert("Este navegador não suporta notificações! Você possui um lembrete.");
       showSuccessToast(message);
 
   } else if (Notification.permission === "granted") {
-      // If permission is already granted, show the notification
-      showNotificationWithSound(message);
+      showNotification(message);
   } else if (Notification.permission !== 'denied') {
-      // Request permission from the user
       Notification.requestPermission().then(function (permission) {
-          // If permission is granted, show the notification
           if (permission === "granted") {
-              showNotificationWithSound(message);
+            showNotification(message);
           }
       });
   }
 }
 
-function showNotificationWithSound(message) {
+function showNotification(message) {
+  var img = new Image();
 
-  var notification = new Notification("Lembrete", {
-      body: message,
-      icon: "https://i.imgur.com/uAlPKdJ.png" 
-  });
+  img.referrerPolicy = "no-referrer";
+  
+  img.src = "https://i.imgur.com/uAlPKdJ.png";
+
+  img.onload = function() {
+    var notification = new Notification("Lembrete", {
+        body: message,
+        icon: img.src 
+    });
+};
 
 }

@@ -1,7 +1,7 @@
 // main.js
 import { API_URL } from '../utils/constants.js';
 import { validateEmail } from '../utils/validations.js';
-import { getDogs } from './spa-script.js';
+import { getDogs, getRoutines } from './spa-script.js';
 import { showErrorToast, 
     showLoginForm,
     showRegisterForm,
@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             showHomePage();
             getDogs();
+            getRoutines()
         })
         .catch(error => {
             // Handle login error
