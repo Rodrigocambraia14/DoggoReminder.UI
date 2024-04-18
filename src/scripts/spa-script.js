@@ -10,12 +10,13 @@ let routines = [];
 let chosenDogId = undefined;
 
 document.addEventListener('DOMContentLoaded', function() {
-    getDogs()
-    getRoutines()
 
-    setPortionsInputEvent()
+    getDogs();
+    getRoutines();
+    setPortionsInputEvent();
+    setCloseModalEvent();
 
-    setCloseModalEvent()
+    setInterval(getNotifications, 30000); 
 });
 
 function setPortionsInputEvent(){
@@ -193,45 +194,70 @@ export function getRoutines(){
 
           routines.forEach(routine => {
             const row = document.createElement('tr');
-            const arrowCell = document.createElement('td'); // Create a cell for the arrow
-            const arrowButton = document.createElement('button'); // Create the arrow button
-            arrowButton.innerHTML = '&#9660;'; // Unicode for downward arrow
-            arrowButton.classList.add('accordion-btn'); // Add a class for styling
-            arrowCell.appendChild(arrowButton); // Append the arrow button to the cell
+            const arrowCell = document.createElement('td'); 
+            arrowCell.style.textAlign = 'end';
+
+            const arrowButton = document.createElement('button'); 
+
+            arrowButton.innerHTML = '&#9660;';
+            arrowButton.style.cursor = 'pointer';
+            arrowButton.style.border = 'none';
+            arrowButton.style.color = 'orange';
+            arrowButton.style.fontSize = '20px';
+            arrowButton.style.background = 'transparent';
+            arrowButton.classList.add('accordion-btn'); 
+            arrowCell.appendChild(arrowButton); 
             
-            const detailsCell = document.createElement('td'); // Create a cell for the details
-            detailsCell.setAttribute('colspan', '2'); // Span the cell across 2 columns
+            const detailsRow = document.createElement('tr');
             
-            const innerTable = document.createElement('table'); // Create inner table
-            const headerRow = document.createElement('tr'); // Create header row for the inner table
-            headerRow.innerHTML = `
-                <th>Nome</th>
-                <th>Quantidade (gramas)</th>
-                <th>Horário</th>
-            `;
-            innerTable.appendChild(headerRow); // Append header row to inner table
+            const innerTable = document.createElement('table'); 
+            innerTable.style.width = '100%';
+            innerTable.style.background = '#393939d4';
+            innerTable.style.borderRadius = '10px';
+            
+
+            if(routine.portion_details.length == 0){
+              const innerRow = document.createElement('tr'); 
+                innerRow.style.textAlign = 'center';
+                innerRow.innerHTML = `
+                    <span>Nenhuma porção cadastrada!</span>
+                `;
+                innerTable.appendChild(innerRow); 
+            }
+            else{
+              const headerRow = document.createElement('tr'); 
+              headerRow.innerHTML = `
+                  <th>Nome</th>
+                  <th>Quantidade (gramas)</th>
+                  <th>Horário</th>
+              `;
+              innerTable.appendChild(headerRow); 
+            }
         
-            routine.portion_details.forEach(portion => { // Loop through portion details
-                const innerRow = document.createElement('tr'); // Create a row for the inner table
+            routine.portion_details.forEach(portion => { 
+                const innerRow = document.createElement('tr'); 
                 innerRow.innerHTML = `
                     <td>${portion.name}</td>
                     <td>${portion.grams}</td>
                     <td>${portion.feed_time}</td>
                 `;
-                innerTable.appendChild(innerRow); // Append inner row to inner table
+                innerTable.appendChild(innerRow); 
             });
             
-            detailsCell.appendChild(innerTable); // Append the inner table to the details cell
-            detailsCell.style.display = 'none'; // Initially hide the details
+            const cell = document.createElement('td');
+            cell.setAttribute('colspan', '12');
+
+            cell.appendChild(innerTable);
+            detailsRow.appendChild(cell);
+            detailsRow.style.display = 'none'; 
             
-            // Toggle visibility of details on arrow button click
             arrowButton.addEventListener('click', () => {
-                if (detailsCell.style.display === 'none') {
-                    detailsCell.style.display = 'table-cell';
-                    arrowButton.innerHTML = '&#9650;'; // Change arrow to upward when expanded
+                if (detailsRow.style.display === 'none') {
+                    detailsRow.style.display = 'table-row';
+                    arrowButton.innerHTML = '&#9650;'; // troca ícone
                 } else {
-                    detailsCell.style.display = 'none';
-                    arrowButton.innerHTML = '&#9660;'; // Change arrow to downward when collapsed
+                    detailsRow.style.display = 'none';
+                    arrowButton.innerHTML = '&#9660;'; // troca ícone
                 }
             });
             
@@ -239,9 +265,9 @@ export function getRoutines(){
                 <td>${routine.name}</td>
                 <td>${routine.portions}</td>
             `;
-            row.appendChild(arrowCell); // Append the arrow cell to the row
-            row.appendChild(detailsCell); // Append the details cell to the row
-            tableBody.appendChild(row); // Append the row to the table body
+            row.appendChild(arrowCell); 
+            tableBody.appendChild(row); 
+            tableBody.appendChild(detailsRow); 
         });
 
         }
@@ -264,7 +290,7 @@ function removeDog(dog_id) {
     .then(data => {
       showSuccessToast(data.message);
       getDogs()
-
+      getRoutines()
     })
     .catch(error => console.error('Error fetching dogs:', error));
 }
@@ -469,4 +495,32 @@ function getPortionDetailValues() {
   });
 
   return portionDetailsArray;
+}
+
+function getNotifications(){
+  const userId = localStorage.getItem('userId');
+
+  fetch(API_URL + `/food_routine/get_notifications?user_id=${userId}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(response => {
+    if (response.ok) {
+        return response.json();
+    } else {
+        throw new Error(response.Error);
+    }
+  })
+  .then(data => {
+
+    if(data.has_notification){
+      showSuccessToast(data.message)
+    }
+  })
+  .catch(error => {
+    // Handle login error
+    console.error('Register error:', error);
+  }).finally( () =>{
+
+});
 }

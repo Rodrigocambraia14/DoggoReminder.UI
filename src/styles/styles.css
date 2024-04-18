@@ -163,7 +163,7 @@ a:hover {
 	flex-direction: column;
   }
 
-  #meus-caes table {
+  #meus-caes table, #routine-table {
 	width: 80%;
   background: #0000007a;
   border-collapse: collapse;
@@ -172,12 +172,12 @@ a:hover {
   border: 1px solid black;
   }
   
-  #meus-caes th, td {
+  #meus-caes th, td, #routine-table th {
 	padding: 10px;
 	text-align: left;
   }
   
-  #meus-caes th {
+  #meus-caes th, #routine-table th {
 	background-color: orange;
 	color: white;
   }
