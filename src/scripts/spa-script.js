@@ -531,17 +531,17 @@ function showNotification(message) {
       showSuccessToast(message);
 
   } else if (Notification.permission === "granted") {
-      showNotification(message);
+      showNotificationUI(message);
   } else if (Notification.permission !== 'denied') {
       Notification.requestPermission().then(function (permission) {
           if (permission === "granted") {
-            showNotification(message);
+            showNotificationUI(message);
           }
       });
   }
 }
 
-function showNotification(message) {
+function showNotificationUI(message) {
   var img = new Image();
 
   img.referrerPolicy = "no-referrer";
