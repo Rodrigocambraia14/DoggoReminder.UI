@@ -10,7 +10,6 @@ let routines = [];
 let chosenDogId = undefined;
 
 document.addEventListener('DOMContentLoaded', function() {
-
     getDogs();
     getRoutines();
     setPortionsInputEvent();
@@ -514,7 +513,7 @@ function getNotifications(){
   .then(data => {
 
     if(data.has_notification){
-      showSuccessToast(data.message)
+      showNotification(data.message)
     }
   })
   .catch(error => {
@@ -523,4 +522,34 @@ function getNotifications(){
   }).finally( () =>{
 
 });
+}
+
+
+function showNotification(message) {
+  // Check if the browser supports notifications
+  if (!("Notification" in window)) {
+      alert("Este navegador não suporta notificações! Você possui um lembrete.");
+      showSuccessToast(message);
+
+  } else if (Notification.permission === "granted") {
+      // If permission is already granted, show the notification
+      showNotificationWithSound(message);
+  } else if (Notification.permission !== 'denied') {
+      // Request permission from the user
+      Notification.requestPermission().then(function (permission) {
+          // If permission is granted, show the notification
+          if (permission === "granted") {
+              showNotificationWithSound(message);
+          }
+      });
+  }
+}
+
+function showNotificationWithSound(message) {
+
+  var notification = new Notification("Lembrete", {
+      body: message,
+      icon: "https://i.imgur.com/uAlPKdJ.png" 
+  });
+
 }
