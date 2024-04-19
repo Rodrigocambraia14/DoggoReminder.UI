@@ -1,4 +1,5 @@
 //start - switch pages
+import { startUI } from './spa-script.js';
 
 export function showLoginForm() {
     document.getElementById('login').style.display = 'flex';
@@ -10,6 +11,7 @@ export function showHomePage() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('register').style.display = 'none';
     document.getElementById('home').style.display = 'flex';
+    startUI();
 }
 
 export function showRegisterForm() {
@@ -24,6 +26,7 @@ export function logout() {
     document.getElementById('home').style.display = 'none';
 
     localStorage.clear();
+    location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", function() {

@@ -234,8 +234,8 @@
                        <label for="genero">Gênero</label>
                        <select id="genero" name="genero" required>
                            <option value="">Selecione...</option>
-                           <option value="Macho">Macho</option>
-                           <option value="Fêmea">Fêmea</option>
+                           <option value="M">Macho</option>
+                           <option value="F">Fêmea</option>
                        </select>
                    </div>
                    <div class="form-group">
@@ -284,7 +284,7 @@
       <!-- modal -->
       <div id="updateDogModal" class="modal" style="display: none;">
          <div class="modal-content">
-           <span class="close">&times;</span>
+           <span class="close" id="update-dog-modal-close">&times;</span>
            <form id="updateDogForm">
              <div class="form-group">
                <label for="modal-nome">Nome</label>
@@ -305,9 +305,8 @@
              <div class="form-group">
                <label for="modal-genero">Gênero</label>
                <select id="modal-genero" name="modal-genero" required>
-                  <option value="">Selecione...</option>
-                  <option value="Macho">Macho</option>
-                  <option value="Fêmea">Fêmea</option>
+                  <option value="M">Macho</option>
+                  <option value="F">Fêmea</option>
                </select>
              </div>
              <button type="submit">Atualizar</button>

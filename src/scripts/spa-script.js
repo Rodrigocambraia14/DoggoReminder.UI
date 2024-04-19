@@ -9,20 +9,20 @@ let dogs = [];
 let routines = [];
 let chosenDogId = undefined;
 
-document.addEventListener('DOMContentLoaded', function() {
+export function startUI(){
 
-  const user_id = localStorage.getItem('userId');
+  const storedUserId = localStorage.getItem('userId');
 
-  if(user_id){
-    getDogs();
-    getRoutines();
-    setPortionsInputEvent();
-    setCloseModalEvent();
-
-    setInterval(getNotifications, 30000); 
-  }
+  if(storedUserId == undefined)
+    return;
     
-});
+  getDogs();
+  getRoutines();
+  setPortionsInputEvent();
+  setCloseModalEvent();
+
+  setInterval(getNotifications, 30000); 
+};
 
 function setPortionsInputEvent(){
   const portionsInput = document.getElementById('portions');
@@ -114,6 +114,10 @@ export function getDogs(){
           dogs = data;
 
           const dogSelect = document.getElementById('dog-select');
+
+          // Limpa opções atuais
+          dogSelect.innerHTML = '';
+
           dogs.forEach(dog => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -318,7 +322,7 @@ function updateDog(dog_id) {
   nomeInput.value = chosenDog.name;
   idadeInput.value = chosenDog.age;
   corInput.value = chosenDog.color;
-  generoInput.value = chosenDog.gender;
+  generoInput.value = chosenDog.gender.toUpperCase();
 
   let existingBreedSelect = document.getElementById('raca');
   let racaOptions = existingBreedSelect.innerHTML;
@@ -328,6 +332,11 @@ function updateDog(dog_id) {
 
   modal.style.display = 'block';
 }
+
+document.getElementById('update-dog-modal-close').addEventListener('click', () => {
+  let modal = document.getElementById('updateDogModal');
+  modal.style.display = 'none';
+});
 
 
 document.getElementById('dogForm').addEventListener('submit', function(event) {
